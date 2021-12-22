@@ -47,15 +47,17 @@ public:
 	}
 	void Disconnect() {
 		is_connected = !CloseHandle(pipe);
-		if (!is_connected)
+		if (!is_connected) {
 			std::cout << "Disonnected\n";
+			pipe = nullptr;
+		}
 		else
 			std::cout << "Disconnection failed: error " << GetLastError() << '\n';
 	}
 	~Client() {
-		if (pipe != INVALID_HANDLE_VALUE)
+		if (pipe != INVALID_HANDLE_VALUE && pipe != nullptr)
 			CloseHandle(pipe);
-		if (event != INVALID_HANDLE_VALUE)
+		if (event != INVALID_HANDLE_VALUE && event != nullptr)
 			CloseHandle(event);
 	}
 private:
