@@ -9,9 +9,9 @@ void WINAPI Callback(DWORD dwErrorCode, DWORD dwNumberOfBytesTransfered, LPOVERL
 class Client {
 public:
 	Client() : is_connected(false), pipe(nullptr) {
-		event = CreateEventA(nullptr, false, false, nullptr);
-		if (event == INVALID_HANDLE_VALUE)
-			throw(GetLastError());
+		//event = CreateEventA(nullptr, false, false, nullptr);
+		//if (event == INVALID_HANDLE_VALUE)
+			//throw(GetLastError());
 	}
 	void Connect() {
 		if (!is_connected) {
@@ -37,9 +37,11 @@ public:
 	void ReadMessage() {
 		OVERLAPPED over_read = OVERLAPPED();
 		char message[buffer_size] = {'\0'};
-		over_read.hEvent = event;
-		if (ReadFileEx(pipe, message, 512, &over_read, Callback))
+		//over_read.hEvent = event;
+		if (ReadFileEx(pipe, message, 512, &over_read, Callback)) {
+			SleepEx(INFINITE, true);
 			std::cout << "Message: " << message << '\n';
+		}
 		else
 			std::cout << "Reading failed: error " << GetLastError() << '\n';
 	}
@@ -55,13 +57,13 @@ public:
 	~Client() {
 		if (pipe != INVALID_HANDLE_VALUE && pipe != nullptr)
 			CloseHandle(pipe);
-		if (event != INVALID_HANDLE_VALUE && event != nullptr)
-			CloseHandle(event);
+		//if (event != INVALID_HANDLE_VALUE && event != nullptr)
+			//CloseHandle(event);
 	}
 private:
 	static const size_t buffer_size = 512;
 	bool is_connected;
-	HANDLE event;
+	//HANDLE event;
 	HANDLE pipe;
 };
 
