@@ -38,10 +38,8 @@ public:
 		OVERLAPPED over_read = OVERLAPPED();
 		char message[buffer_size] = {'\0'};
 		over_read.hEvent = event;
-		if (ReadFileEx(pipe, message, 512, &over_read, Callback)) {
-			SleepEx(INFINITE, true);
+		if (ReadFileEx(pipe, message, 512, &over_read, Callback))
 			std::cout << "Message: " << message << '\n';
-		}
 		else
 			std::cout << "Reading failed: error " << GetLastError() << '\n';
 	}
