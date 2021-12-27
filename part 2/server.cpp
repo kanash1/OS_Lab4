@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <iostream>
+#include <string>
 #undef max
 #include "menu.h"
 
@@ -38,7 +39,7 @@ public:
 		OVERLAPPED over_write = OVERLAPPED();
 		std::string message;
 		std::cout << "Enter message:\n";
-		std::cin >> message;
+		std::getline(cin, message);
 		over_write.hEvent = event;
 		if (message.size() <= buffer_size) {
 			if (WriteFile(pipe, message.data(), message.size(), nullptr, &over_write))
